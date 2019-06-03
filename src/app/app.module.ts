@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule, MatPaginator, MatPaginatorModule, MatButtonModule } from '@angular/material';
+import { SearchHttpService } from './search-service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,9 @@ import { MatTableModule, MatPaginator, MatPaginatorModule, MatButtonModule } fro
     MatTableModule,
     MatPaginatorModule,
   ],
-  providers: [],
+  providers: [
+    SearchHttpService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

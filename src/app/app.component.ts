@@ -3,7 +3,8 @@ import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { map, startWith, switchMap, catchError, } from 'rxjs/operators';
-import { Observable, merge, of, forkJoin, } from 'rxjs';
+import { merge, of, } from 'rxjs';
+import { SearchHttpService } from './search-service';
 
 export interface GithubApi {
   items: GithubUser[];
@@ -14,28 +15,6 @@ export interface GithubUser {
   [key: string]: any;
 }
 
-export class SearchHttpDao {
-  constructor(private http: HttpClient) { }
-
-  getUsers(term: string, page: number, perPage: number): Observable<GithubApi> {
-    const href = 'https://api.github.com/search/users';
-    const requestParams = `${href}?q=${term}&page=${page + 1}&per_page=${perPage}`;
-    return this.http.get<GithubApi>(`${requestParams}`);
-  }
-
-  getUser(data): Observable<GithubUser> {
-    return forkJoin(...data.items.map((d) => {
-      const href = `https://api.github.com/users/${d.login}`;
-      return this.http.get(`${href}`)
-        .pipe(
-          map((c: GithubUser) => {
-            return { 'followers': c.followers, 'name': c.name, 'bio': c.bio }
-          })
-        )
-    }));
-  }
-}
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -43,9 +22,11 @@ export class SearchHttpDao {
 })
 export class AppComponent {
   title = 'github-search';
-  public searchForm: FormGroup = this.fb.group({});
+  term = new FormControl('', []);
+  public searchForm: FormGroup = this.fb.group({
+    term: this.term,
+  });
   delayApiResponse = false;
-  searchDatabase!: SearchHttpDao;
   resultsLength = 0;
 
   displayedColumns: string[] = ['name', 'login', 'bio', 'url', 'html_url', 'followers_count'];
@@ -56,7 +37,7 @@ export class AppComponent {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
+    private searchService: SearchHttpService,
   ) { }
 
   ngOnInit() {
@@ -70,16 +51,15 @@ export class AppComponent {
   }
 
   public search = (searchFormValue) => {
-    this.searchDatabase = new SearchHttpDao(this.http);
     merge()
       .pipe(
         startWith({}),
         switchMap(() => {
-          return this.searchDatabase
+          return this.searchService
             .getUsers(searchFormValue.term, this.paginator.pageIndex, this.paginator.pageSize)
         }),
         switchMap((data) => {
-          return this.searchDatabase.getUser(data)
+          return this.searchService.getUser(data)
             .pipe(
               map((newData) => {
                 data.items.concat(newData)
