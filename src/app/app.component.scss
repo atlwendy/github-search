@@ -4,22 +4,19 @@
 
 .search-form {
   min-width: 150px;
-  max-width: 500px;
   width: 100%;
-  color: black;
-  text-align: center;
+  text-align: left;
 }
 
 .mat-form-field, .mat-table {
   font-family: 'Ubuntu', sans-serif;
 }
 
-.search {
-  width: 80%;
-}
-
-input {
-  background-color:#e3ebf5;
+ts-input {
+  display: inline-block;
+  width: 60%;
+  margin-right: 20px;
+  background-color: white;
 }
 
 button {
