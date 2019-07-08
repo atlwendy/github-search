@@ -10,7 +10,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule, MatPaginator, MatPaginatorModule, MatButtonModule } from '@angular/material';
-import { TsInputModule, TsButtonModule, TsAutocompleteModule, TsOptionModule, TsSelectModule, TsCardModule } from '@terminus/ui'
 import { SearchHttpService } from './search-service';
 
 @NgModule({
@@ -29,12 +28,6 @@ import { SearchHttpService } from './search-service';
     HttpClientModule,
     MatTableModule,
     MatPaginatorModule,
-    TsAutocompleteModule,
-    TsOptionModule,
-    TsButtonModule,
-    TsInputModule,
-    TsSelectModule,
-    TsCardModule,
   ],
   providers: [
     SearchHttpService,

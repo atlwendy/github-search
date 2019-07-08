@@ -6,18 +6,14 @@
     class="search-form" 
     novalidate
     [formGroup]="searchForm"
+    (ngSubmit)="search(searchForm.value)"
     fxLayout="column wrap"
   >
-    
-    <ts-input
-      label="Search term"
-      [formControl]="searchForm.get('term')"
-      value="">
-    </ts-input>
-    
-    <ts-button
-      (clicked)="search(searchForm.value)"
-     >Search</ts-button>
+    <mat-form-field class="search">
+      <input matInput placeholder="Search term" formControlName="term" value="">
+    </mat-form-field>
+  
+    <button mat-raised-button >Search</button>
   </form>
 
   <div class="search-mat-table" >
@@ -71,74 +67,5 @@
   </div>
 
 </div>
-
-<ts-card tsVerticalSpacing fxFlex>
-  <h3 tsCardTitle tsVerticalSpacing="small--1">
-    Autocomplete Example
-  </h3>
-  <ts-autocomplete
-    label="State name..."
-    hint="Begin typing to select.."
-    [formControl]="stateCtrl"
-    [allowMultiple]="true"
-    [allowDuplicateSelections]="true"
-    [reopenAfterSelection]="false"
-    [showProgress]="fakeAsync"
-    (queryChange)="queryHasChanged($event)"
-    (duplicateSelection)="duplicate($event)"
-    tsVerticalSpacing
-  >
-
-    <ts-option
-      [value]="state.name"
-      [option]="state"
-      *ngFor="let state of filteredStates | async"
-    >
-      {{ state.name }}
-    </ts-option>
-  </ts-autocomplete>
-</ts-card>
-
-<ts-card tsVerticalSpacing fxFlex>
-  <h3 tsCardTitle tsVerticalSpacing="small--1">
-    Single Select w/ Filtering
-  </h3>
-
-  <ts-select
-    label="Single select"
-    hint="Select a single option"
-    [isFilterable]="true"
-    [formControl]="myForm.get('myChoices1')"
-    [compareWith]="comparator"
-    (selectionChange)="isChanged($event)"
-    (queryChange)="onFilterOptions($event)"
-    (optionSelected)="isSelected($event)"
-    (optionDeselected)="isDeselected($event)"
-    tsVerticalSpacing
-  >
-    <ts-select-trigger>
-      My custom trigger!
-      <strong>{{ myForm.get('myChoices1')?.value }}</strong>
-    </ts-select-trigger>
-
-    <ts-option>
-      <h4 tsOptionDisplay>None</h4>
-    </ts-option>
-
-    <ts-option
-      [value]="option.slug"
-      [option]="option"
-      [isDisabled]="option?.disabled"
-      *ngFor="let option of firstOptions | async"
-    >
-      {{ option.slug }}
-    </ts-option>
-  </ts-select>
-
-  <div>
-    FormControl value: {{ myForm.get('myChoices1')?.value | json }}
-  </div>
-</ts-card>
-
 
 <router-outlet></router-outlet>
