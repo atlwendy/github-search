@@ -39,7 +39,7 @@ export class AppComponent {
   dataSource = new MatTableDataSource<GithubUser>([]);
 
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   constructor(
     private fb: FormBuilder,
