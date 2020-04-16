@@ -23,14 +23,13 @@ jobs:
     # Runs a single command using the runners shell
     - name: Run a one-line script
       run: echo Hello, world!
-
     - name: Set SHOULD_RUN flag
-        run:|
-          if [[ "${{github.event.head_commit.message}}" =~ (skip\ ci|ci\ skip) ]]; then
-            echo "::set-env name=SHOULD_RUN::false"
-          else
-            echo "::set-env name=SHOULD_RUN::true"
-          fi
+      run: |
+        if [[ "${{github.event.head_commit.message}}" =~ (skip\ ci|ci\ skip) ]]; then
+          echo "::set-env name=SHOULD_RUN::false"
+        else
+          echo "::set-env name=SHOULD_RUN::true"
+        fi
     - name: Set up Node
       uses: actions/setup-node@v1
       with:
